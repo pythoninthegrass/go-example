@@ -25,14 +25,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     permissions:
-      actions: read
-      checks: write
       contents: read
-      issues: read
       packages: write
-      pull-requests: read
-      repository-projects: read
-      statuses: read
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
@@ -80,7 +74,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
-            latest=true
+            latest=auto
+            prefix=${{ env.PLATFORM }}/,onlatest=true
           tags: |
             type=schedule
             type=ref,event=branch
@@ -108,15 +103,9 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ env.PLATFORM }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          # outputs: >-
-          #   name=target,
-          #   type=registry,
-          #   push=true,
-          #   annotation-index.org.opencontainers.image.description=${{ steps.meta.outputs.labels.org.opencontainers.image.description }}
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
