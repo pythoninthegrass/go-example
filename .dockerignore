@@ -1,0 +1,5 @@
+.github
+Dockerfile
+fly.toml
+main.tf
+*.md
