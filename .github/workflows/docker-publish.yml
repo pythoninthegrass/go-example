@@ -20,7 +20,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ linux/amd64, linux/arm64 ]
+        platform: [ linux/amd64, linux/arm64/v8 ]
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
