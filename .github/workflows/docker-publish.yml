@@ -75,9 +75,9 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=auto
-            suffix=/${{ env.PLATFORM }}
           tags: |
             type=raw,value=latest,priority=1000
+            type=raw,value=latest,suffix=/${{ env.PLATFORM }},priority=200
             type=schedule
             type=ref,event=branch
             type=ref,event=pr
