@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     fly = {
-      source = "fly-apps/fly"
+      source  = "fly-apps/fly"
       version = "0.0.20"
     }
   }
@@ -10,7 +10,7 @@ terraform {
 provider "fly" {
   useinternaltunnel    = true
   internaltunnelorg    = "personal"
-  internaltunnelregion = "ewr"
+  internaltunnelregion = "dfw"
 }
 
 resource "fly_app" "exampleApp" {
@@ -32,10 +32,10 @@ resource "fly_ip" "exampleIpv6" {
 
 resource "fly_machine" "exampleMachine" {
   for_each = toset(["dfw", "ewr", "lax"])
-  app    = fly_app.exampleApp.name
-  region = each.value
-  name   = "flyiac-${each.value}"
-  image  = "flyio/iac-tutorial:latest"
+  app      = fly_app.exampleApp.name
+  region   = each.value
+  name     = "flyiac-${each.value}"
+  image    = "ghcr.io/pythoninthegrass/go-example:latest"
   services = [
     {
       ports = [
@@ -52,7 +52,7 @@ resource "fly_machine" "exampleMachine" {
       "internal_port" : 80
     },
   ]
-  cpus = 1
-  memorymb = 256
+  cpus       = 1
+  memorymb   = 256
   depends_on = [fly_app.exampleApp]
 }
