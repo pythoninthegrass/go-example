@@ -75,8 +75,9 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=auto
-            prefix=${{ env.PLATFORM }}/,onlatest=true
+            suffix=/${{ env.PLATFORM }}
           tags: |
+            type=raw,value=latest,priority=1000
             type=schedule
             type=ref,event=branch
             type=ref,event=pr
@@ -102,7 +103,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
