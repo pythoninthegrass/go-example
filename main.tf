@@ -2,19 +2,22 @@ terraform {
   required_providers {
     fly = {
       source  = "fly-apps/fly"
-      version = "0.0.20"
+      version = "0.0.23"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.5.1"
     }
   }
 }
 
-provider "fly" {
-  useinternaltunnel    = true
-  internaltunnelorg    = "personal"
-  internaltunnelregion = "dfw"
+resource "random_integer" "exampleAppSuffix" {
+  min = 1000
+  max = 9999
 }
 
 resource "fly_app" "exampleApp" {
-  name = "dry-fire-7752"
+  name = "dry-fire-${random_integer.exampleAppSuffix.result}"
   org  = "personal"
 }
 
@@ -34,7 +37,7 @@ resource "fly_machine" "exampleMachine" {
   for_each = toset(["dfw", "ewr", "lax"])
   app      = fly_app.exampleApp.name
   region   = each.value
-  name     = "flyiac-${each.value}"
+  name     = "pythoninthegrass-fly-iac-${each.value}"
   image    = "ghcr.io/pythoninthegrass/go-example:latest"
   services = [
     {
@@ -49,8 +52,8 @@ resource "fly_machine" "exampleMachine" {
         }
       ]
       "protocol" : "tcp",
-      "internal_port" : 80
-    },
+      "internal_port" : 8080
+    }
   ]
   cpus       = 1
   memorymb   = 256
