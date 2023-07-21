@@ -16,7 +16,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  docker:
+  build:
     strategy:
       matrix:
         platform: [ linux/amd64,linux/arm64 ]
