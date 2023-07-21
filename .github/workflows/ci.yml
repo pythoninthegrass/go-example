@@ -57,7 +57,7 @@ jobs:
           echo "DOCKER_IMAGE=${DOCKER_IMAGE}" >> $GITHUB_ENV
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@master
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: all
 
@@ -81,6 +81,7 @@ jobs:
           file: ./Dockerfile
           platforms: ${{ matrix.platform }}
           push: true
+          provenance: false
           tags: ${{ env.TAGS }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
